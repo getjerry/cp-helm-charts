@@ -62,6 +62,13 @@ spec:
             - containerPort: {{ .Values.jmx.port }}
               name: jmx
             {{- end }}
+          livenessProbe:
+            exec:
+              command:
+                - curl -s -X GET http://localhost:8083/connectors/redshift-sink/status | jq -r '.tasks | map(select(.trace != null)) | length == 0' | grep -q 'true'
+            initialDelaySeconds: 3600
+            periodSeconds: 3600
+            timeoutSeconds: 20
           resources:
 {{ toYaml .Values.resources | indent 12 }}
           env:
