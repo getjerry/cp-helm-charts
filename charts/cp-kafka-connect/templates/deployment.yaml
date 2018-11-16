@@ -65,11 +65,11 @@ spec:
           livenessProbe:
             exec:
               command:
-                - curl -s -X GET http://localhost:8083/connectors/redshift-sink/status | jq -r '.tasks | map(select(.trace != null)) | length == 0' | grep -q 'true'
-            initialDelaySeconds: 3600
-            periodSeconds: 3600
-            timeoutSeconds: 20
-            failureThreshold: 1
+                - curl -s -X GET http://confluent-cp-kafka-connect.default.svc.cluster.local:8083/connectors/redshift-sink/status | jq -r '.tasks | map(select(.trace != null)) | length == 0' | grep -q 'true'
+            initialDelaySeconds: 1200
+            periodSeconds: 1200
+            timeoutSeconds: 30
+            failureThreshold: 2
             successThreshold: 1
           resources:
 {{ toYaml .Values.resources | indent 12 }}
